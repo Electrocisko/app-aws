@@ -1,0 +1,17 @@
+{
+  "name": "app-github-beanstalk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file .env  app.js",
+    "dev": "nodemon --env-file .env app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
