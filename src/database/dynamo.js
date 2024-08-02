@@ -1,24 +1,48 @@
 import AWS from "aws-sdk";
+import { nanoid } from "nanoid";
 
-const REGION = process.env.AWS_DEFAULT_REGION;
+// const REGION = process.env.AWS_DEFAULT_REGION;
 
-console.log(REGION);
+// AWS.config.update({
+//   region: REGION,
+// });
 
 AWS.config.update({
-    region: REGION
-})
+  region: process.env.AWS_DEFAULT_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
 
 const dynamoClient = new AWS.DynamoDB.DocumentClient();
-const TABLE_NAME = 'productsDB'
+const TABLE_NAME = "productsDB";
 
-const getProducts = async () => {
-    const params = {
-        TableName: TABLE_NAME
-        }
-    const products = await dynamoClient.scan(params).promise();
-    return products
-}
+const getItems = async () => {
+  const params = {
+    TableName: TABLE_NAME,
+  };
+  const items = await dynamoClient.scan(params).promise();
+  return items;
+};
 
-export {
-    getProducts
-}
+const getItemById = async (id) => {
+  const params = {
+    TableName: TABLE_NAME,
+    Key: {
+      product_id: id,
+    },
+  };
+  const response = await dynamoClient.get(params).promise();
+  return response;
+};
+
+const addItem = async (product) => {
+  product.product_id = nanoid();
+  const params = {
+    TableName: TABLE_NAME,
+    Item: product,
+  };
+  const data = await dynamoClient.put(params).promise();
+  return data;
+};
+
+export { getItems,getItemById, addItem };
