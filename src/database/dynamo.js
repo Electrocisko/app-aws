@@ -45,4 +45,14 @@ const addItem = async (product) => {
   return data;
 };
 
-export { getItems,getItemById, addItem };
+const deleteItem = async (id) => {
+  const params = {
+    TableName: TABLE_NAME,
+    Key: {
+      product_id: id,
+    },
+  };
+  return await dynamoClient.delete(params).promise();
+}
+
+export { getItems,getItemById, addItem, deleteItem };
