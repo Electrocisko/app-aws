@@ -1,4 +1,4 @@
-import {getItems, getItemById, addItem, deleteItem} from "../database/dynamo.js"
+import {getItems, getItemById, addItem, deleteItem, getItemByIndex} from "../database/dynamo.js"
 
  const getProducts = async (req,res) => {
     try {
@@ -35,8 +35,9 @@ const addProduct = async (req,res) => {
 
 const getProductById = async (req, res) => {
     try {
-        const id = req.params.id;
-        const data = await getItemById(id);
+        const {sk} = req.params;
+        const pk = "product"
+        const data = await getItemById(pk,sk);
         res.status(200).json({
             status: "success",
             data
@@ -67,10 +68,29 @@ try {
 }
 }
 
+const getProductByStyle = async (req, res) => {
+    try {
+        const pk="product";
+        const index="casual";
+        const data = await getItemByIndex(pk,index);
+        res.status(200).json({
+            status: "success",
+            data
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            message: "Error en obtener productos por estilos",
+            error: error.message
+          });
+    }
+}
+
 
 export {
     getProducts,
     addProduct,
     getProductById,
-    deleteProductById
+    deleteProductById, 
+    getProductByStyle
 }

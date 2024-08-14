@@ -4,6 +4,8 @@ import { fileURLToPath } from "url";
 import productsRouter from "./src/routes/productsRouter.js"
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+import {seeds} from "./src/database/seeds.js"
+
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -18,6 +20,8 @@ app.use("/api/products", productsRouter)
 app.get("/", (req,res) => {
     res.send("<h1>App en Express para AWS<h1/>")
 })
+
+    //seeds();
 
 
 app.listen(PORT, () => {
